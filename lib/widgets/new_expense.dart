@@ -73,14 +73,25 @@ class _NewExpenseState extends State<NewExpense> {
           date: _selectedDate!,
           category: _selectedCategory),
     );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
       child: Column(
         children: [
+          const Text(
+            "Enter a new Expense",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 23,
+          ),
           TextField(
             controller: _titleController,
             maxLength: 50,
