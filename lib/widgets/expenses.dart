@@ -84,8 +84,12 @@ class _ExpensesState extends State<Expenses> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "ExpenseTracker",
+        title: const Align(
+          alignment:
+              Alignment.centerLeft, // Align the title to the start (left)
+          child: Text(
+            "ExpenseTracker",
+          ),
         ),
         actions: [
           IconButton(
