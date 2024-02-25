@@ -47,13 +47,41 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
+    final expenseIndex = _registerdExpenses.indexOf(expense);
+
     setState(() {
       _registerdExpenses.remove(expense);
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("Expense Deleted"),
+        action: SnackBarAction(
+            label: "Undo",
+            onPressed: () {
+              setState(() {
+                _registerdExpenses.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget maincontent = const Center(
+      child: Text(
+        "No Expense Found...\nStart Adding Some!!",
+        style: TextStyle(fontSize: 20),
+      ),
+    );
+
+    if (_registerdExpenses.isNotEmpty) {
+      maincontent = ExpensesList(
+        expenses: _registerdExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -71,10 +99,7 @@ class _ExpensesState extends State<Expenses> {
           const Text("The Chart"),
           Expanded(
             //to resolve column inside column we again wrap with the expanded
-            child: ExpensesList(
-              expenses: _registerdExpenses,
-              onRemoveExpense: _removeExpense,
-            ),
+            child: maincontent,
           ),
         ],
       ),
