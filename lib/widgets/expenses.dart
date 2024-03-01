@@ -69,6 +69,7 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     Widget maincontent = const Center(
       child: Text(
         "No Expense Found...\nStart Adding Some!!",
@@ -84,30 +85,39 @@ class _ExpensesState extends State<Expenses> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Align(
-          alignment:
-              Alignment.centerLeft, // Align the title to the start (left)
-          child: Text(
-            "ExpenseTracker",
+        appBar: AppBar(
+          title: const Align(
+            alignment:
+                Alignment.centerLeft, // Align the title to the start (left)
+            child: Text(
+              "ExpenseTracker",
+            ),
           ),
+          actions: [
+            IconButton(
+              onPressed: _openAddExpenseOverlay,
+              icon: const Icon(Icons.add),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Chart(expenses: _registerdExpenses),
-          Expanded(
-            //to resolve column inside column we again wrap with the expanded
-            child: maincontent,
-          ),
-        ],
-      ),
-    );
+        body: width < 600
+            ? Column(
+                children: [
+                  Chart(expenses: _registerdExpenses),
+                  Expanded(
+                    //to resolve column inside column we again wrap with the expanded
+                    child: maincontent,
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(child: Chart(expenses: _registerdExpenses)),
+                  Expanded(
+                    //to resolve column inside column we again wrap with the expanded
+                    child: maincontent,
+                  ),
+                ],
+              ));
   }
 }
